@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function getInitials(companyName) {
   if (!companyName) return '?';
@@ -12,6 +12,7 @@ function formatDate(dateStr) {
 }
 
 function JobCard({ job, isAdmin = false, onDelete }) {
+  const navigate = useNavigate();
   return (
     <div className="card h-100 shadow-sm border-0 rounded-4 p-3 d-flex flex-column align-items-center" style={{ minWidth: 320, maxWidth: 400, margin: '0 auto', background: '#fff' }}>
       <div className="d-flex flex-column align-items-center w-100 mb-2">
@@ -35,6 +36,12 @@ function JobCard({ job, isAdmin = false, onDelete }) {
       <div className="mt-auto w-100">
         {isAdmin ? (
           <div className="d-flex gap-2">
+            <button className="btn btn-outline-warning btn-sm w-100" title="Edit Job" onClick={() => navigate(`/edit-job/${job._id}`)}>
+              <i className="bi bi-pencil-square"></i> Edit
+            </button>
+            <button className="btn btn-outline-info btn-sm w-100" title="View Applications" onClick={() => navigate(`/job-applications/${job._id}`)}>
+              <i className="bi bi-people"></i> Applications
+            </button>
             <button className="btn btn-outline-danger btn-sm w-100" title="Delete Job" onClick={() => onDelete && onDelete(job._id)}>
               <i className="bi bi-trash"></i> Delete
             </button>

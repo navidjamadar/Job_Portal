@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 
 const API_BASE = 'http://localhost:5000/api';
 
-function AddJobForm() {
+function AddJobForm({ initialValues, onSubmit, isEdit = false }) {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ title: '', description: '', companyName: '', location: '', salaryMin: '', salaryMax: '', type: '' });
+  const [form, setForm] = useState(initialValues || { title: '', description: '', companyName: '', location: '', salaryMin: '', salaryMax: '', type: '' });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [showToast, setShowToast] = useState(false);
@@ -16,28 +16,32 @@ function AddJobForm() {
     setSuccess('');
     setShowToast(false);
     try {
-      const token = localStorage.getItem('jwt');
-      const res = await fetch(`${API_BASE}/job`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          title: form.title,
-          description: form.description,
-          companyName: form.companyName,
-          location: form.location,
-          salaryRange: { min: Number(form.salaryMin), max: Number(form.salaryMax) },
-          type: form.type
-        })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Job creation failed');
-      setSuccess('Job added!');
-      setForm({ title: '', description: '', companyName: '', location: '', salaryMin: '', salaryMax: '', type: '' });
-      setShowToast(true);
-      setTimeout(() => navigate('/'), 1000);
+      if (onSubmit) {
+        await onSubmit(form, { setError, setSuccess, setShowToast, navigate, setForm });
+      } else {
+        const token = localStorage.getItem('jwt');
+        const res = await fetch(`${API_BASE}/job`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            title: form.title,
+            description: form.description,
+            companyName: form.companyName,
+            location: form.location,
+            salaryRange: { min: Number(form.salaryMin), max: Number(form.salaryMax) },
+            type: form.type
+          })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Job creation failed');
+        setSuccess('Job added!');
+        setForm({ title: '', description: '', companyName: '', location: '', salaryMin: '', salaryMax: '', type: '' });
+        setShowToast(true);
+        setTimeout(() => navigate('/'), 1000);
+      }
     } catch (err) {
       setError(err.message);
       setShowToast(true);
@@ -52,8 +56,8 @@ function AddJobForm() {
         <div className="card shadow-lg border-0 rounded-4">
           <div className="card-body p-5">
             <h2 className="card-title text-center mb-4 fw-bold">
-              <i className="bi bi-plus-circle-fill me-2 text-success"></i>
-              Add Job (Admin Only)
+              <i className={`bi ${isEdit ? 'bi-pencil-square text-warning' : 'bi-plus-circle-fill text-success'} me-2`}></i>
+              {isEdit ? 'Edit Job' : 'Add Job (Admin Only)'}
             </h2>
             <form onSubmit={handleSubmit} autoComplete="on">
               <div className="mb-4">
@@ -106,8 +110,8 @@ function AddJobForm() {
                 </select>
               </div>
               <div className="d-grid gap-2">
-                <button type="submit" className="btn btn-success btn-lg shadow-sm">
-                  <i className="bi bi-plus-circle me-2"></i>Add Job
+                <button type="submit" className={`btn btn-${isEdit ? 'warning' : 'success'} btn-lg shadow-sm`}>
+                  <i className={`bi me-2 ${isEdit ? 'bi-pencil-square' : 'bi-plus-circle'}`}></i>{isEdit ? 'Update Job' : 'Add Job'}
                 </button>
               </div>
             </form>

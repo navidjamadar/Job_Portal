@@ -6,6 +6,8 @@ import ApplyForm from './components/ApplyForm';
 import AddJobForm from './components/AddJobForm';
 import RegisterForm from './components/RegisterForm';
 import ForgotPasswordForm from './components/ForgotPasswordForm';
+import EditJobForm from './components/EditJobForm';
+import ViewApplications from './components/ViewApplications';
 
 function LogoutButton({ setIsLoggedIn, setIsAdmin }) {
   const navigate = useNavigate();
@@ -73,6 +75,8 @@ function App() {
             <>
               <Route path="/" element={<PrivateRoute isLoggedIn={isLoggedIn}><JobList isAdmin={true} /></PrivateRoute>} />
               <Route path="/add-job" element={<PrivateRoute isLoggedIn={isLoggedIn}><AddJobForm /></PrivateRoute>} />
+              <Route path="/edit-job/:jobId" element={<PrivateRoute isLoggedIn={isLoggedIn}><EditJobForm /></PrivateRoute>} />
+              <Route path="/job-applications/:jobId" element={<PrivateRoute isLoggedIn={isLoggedIn}><ViewApplications /></PrivateRoute>} />
               <Route path="/forgot-password" element={<ForgotPasswordForm />} />
             </>
           ) : (

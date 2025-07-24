@@ -17,4 +17,14 @@ exports.applyForJob = async (req, res) => {
   } catch (err) {
     res.status(400).json({ message: 'Application failed', error: err.message });
   }
+};
+
+exports.getApplicationsByJob = async (req, res) => {
+  try {
+    const { jobId } = req.params;
+    const applications = await Application.find({ jobId }).populate('candidateId', 'name email');
+    res.json(applications);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch applications', error: err.message });
+  }
 }; 
