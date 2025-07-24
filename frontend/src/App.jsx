@@ -53,7 +53,6 @@ function App() {
                   <Link className="nav-link" to="/add-job">Add Job</Link>
                 </li>
               )}
-              {/* Hide Apply for Job for admin */}
               {!isAdmin && (
                 <li className="nav-item">
                   <Link className="nav-link" to="/apply">Apply for Job</Link>
@@ -70,7 +69,6 @@ function App() {
       </nav>
       <div className="container-fluid py-4 px-lg-5">
         <Routes>
-          {/* For admin, only show AddJobForm and JobList */}
           {isAdmin ? (
             <>
               <Route path="/" element={<PrivateRoute isLoggedIn={isLoggedIn}><JobList isAdmin={true} /></PrivateRoute>} />

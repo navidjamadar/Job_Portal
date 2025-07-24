@@ -48,6 +48,4 @@ exports.login = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
-};
-
-// Removed refreshToken endpoint and all refresh token logic 
+}; 

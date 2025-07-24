@@ -5,13 +5,10 @@ const cors = require('cors');
 
 const app = express();
 
-// Middleware
 app.use(express.json());
 app.use(cors());
-// Serve static files (e.g., uploaded files) from the 'public' directory
 app.use(express.static('public'));
 
-// Root route
 app.get('/', (req, res) => {
   res.send('Job Portal API is running');
 });
@@ -28,7 +25,6 @@ app.use('/api/application', applicationRoutes);
 const uploadRoutes = require('./routes/upload');
 app.use('/api/upload', uploadRoutes);
 
-// MongoDB connection
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/jobportal';
 

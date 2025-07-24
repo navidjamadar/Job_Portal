@@ -1,6 +1,5 @@
 const Job = require('../models/Job');
 
-// Create a new job (Admin only)
 exports.createJob = async (req, res) => {
   try {
     const job = new Job(req.body);
@@ -11,7 +10,6 @@ exports.createJob = async (req, res) => {
   }
 };
 
-// Get all jobs with filters, pagination, sorting
 exports.getJobs = async (req, res) => {
   try {
     const { location, type, minSalary, maxSalary, keyword, page = 1, limit = 10, sort = '-postedDate' } = req.query;
@@ -39,7 +37,6 @@ exports.getJobs = async (req, res) => {
   }
 };
 
-// Get a single job by ID
 exports.getJobById = async (req, res) => {
   try {
     const job = await Job.findById(req.params.id);
@@ -50,7 +47,6 @@ exports.getJobById = async (req, res) => {
   }
 };
 
-// Update a job (Admin only)
 exports.updateJob = async (req, res) => {
   try {
     const job = await Job.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
@@ -61,7 +57,6 @@ exports.updateJob = async (req, res) => {
   }
 };
 
-// Delete a job (Admin only)
 exports.deleteJob = async (req, res) => {
   try {
     const job = await Job.findByIdAndDelete(req.params.id);

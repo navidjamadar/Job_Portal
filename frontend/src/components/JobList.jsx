@@ -31,7 +31,6 @@ function JobList({ isAdmin = false }) {
       }
     };
     fetchJobs();
-    // eslint-disable-next-line
   }, [filter]);
   const handleChange = (e) => {
     setFilter({ ...filter, [e.target.name]: e.target.value });
@@ -105,7 +104,6 @@ function JobList({ isAdmin = false }) {
           {jobs.length === 0 && <div className="text-center text-muted py-5">No jobs found.</div>}
         </div>
       )}
-      {/* Toast for delete success */}
       <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 11 }}>
         <div className={`toast align-items-center text-bg-success border-0 show ${showToast ? '' : 'd-none'}`} role="alert" aria-live="assertive" aria-atomic="true">
           <div className="d-flex">
